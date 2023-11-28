@@ -1,0 +1,71 @@
+/* Reset margins and padding for the entire page */
+body,
+html {
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    padding-top: 60px;
+}
+
+/* Remove default padding from the navbar items */
+.navbar-nav {
+    padding-left: 0;
+}
+/* Add a black background color to the top navigation */
+#app {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+div.container {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* Style the links inside the navigation bar */
+.navbar a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Style the list items (li) within the navigation bar */
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar a.nav-link {
+    padding: 5px, 20px;
+}
+
+/* Change the color of links on hover */
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.card {
+    height: 100%;
+}

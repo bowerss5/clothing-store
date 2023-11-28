@@ -1,375 +1,58 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <!--
-    Modified from the Debian original for Ubuntu
-    Last updated: 2016-11-16
-    See: https://launchpad.net/bugs/1288690
-  -->
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Apache2 Ubuntu Default Page: It works</title>
-    <style type="text/css" media="screen">
-  * {
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-  }
-
-  body, html {
-    padding: 3px 3px 3px 3px;
-
-    background-color: #D8DBE2;
-
-    font-family: Verdana, sans-serif;
-    font-size: 11pt;
-    text-align: center;
-  }
-
-  div.main_page {
-    position: relative;
-    display: table;
-
-    width: 800px;
-
-    margin-bottom: 3px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0px 0px 0px 0px;
-
-    border-width: 2px;
-    border-color: #212738;
-    border-style: solid;
-
-    background-color: #FFFFFF;
-
-    text-align: center;
-  }
-
-  div.page_header {
-    height: 99px;
-    width: 100%;
-
-    background-color: #F5F6F7;
-  }
-
-  div.page_header span {
-    margin: 15px 0px 0px 50px;
-
-    font-size: 180%;
-    font-weight: bold;
-  }
-
-  div.page_header img {
-    margin: 3px 0px 0px 40px;
-
-    border: 0px 0px 0px;
-  }
-
-  div.table_of_contents {
-    clear: left;
-
-    min-width: 200px;
-
-    margin: 3px 3px 3px 3px;
-
-    background-color: #FFFFFF;
-
-    text-align: left;
-  }
-
-  div.table_of_contents_item {
-    clear: left;
-
-    width: 100%;
-
-    margin: 4px 0px 0px 0px;
-
-    background-color: #FFFFFF;
-
-    color: #000000;
-    text-align: left;
-  }
-
-  div.table_of_contents_item a {
-    margin: 6px 0px 0px 6px;
-  }
-
-  div.content_section {
-    margin: 3px 3px 3px 3px;
-
-    background-color: #FFFFFF;
-
-    text-align: left;
-  }
-
-  div.content_section_text {
-    padding: 4px 8px 4px 8px;
-
-    color: #000000;
-    font-size: 100%;
-  }
-
-  div.content_section_text pre {
-    margin: 8px 0px 8px 0px;
-    padding: 8px 8px 8px 8px;
-
-    border-width: 1px;
-    border-style: dotted;
-    border-color: #000000;
-
-    background-color: #F5F6F7;
-
-    font-style: italic;
-  }
-
-  div.content_section_text p {
-    margin-bottom: 6px;
-  }
-
-  div.content_section_text ul, div.content_section_text li {
-    padding: 4px 8px 4px 16px;
-  }
-
-  div.section_header {
-    padding: 3px 6px 3px 6px;
-
-    background-color: #8E9CB2;
-
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 112%;
-    text-align: center;
-  }
-
-  div.section_header_red {
-    background-color: #CD214F;
-  }
-
-  div.section_header_grey {
-    background-color: #9F9386;
-  }
-
-  .floating_element {
-    position: relative;
-    float: left;
-  }
-
-  div.table_of_contents_item a,
-  div.content_section_text a {
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  div.table_of_contents_item a:link,
-  div.table_of_contents_item a:visited,
-  div.table_of_contents_item a:active {
-    color: #000000;
-  }
-
-  div.table_of_contents_item a:hover {
-    background-color: #000000;
-
-    color: #FFFFFF;
-  }
-
-  div.content_section_text a:link,
-  div.content_section_text a:visited,
-   div.content_section_text a:active {
-    background-color: #DCDFE6;
-
-    color: #000000;
-  }
-
-  div.content_section_text a:hover {
-    background-color: #000000;
-
-    color: #DCDFE6;
-  }
-
-  div.validator {
-  }
-    </style>
-  </head>
-  <body>
-    <div class="main_page">
-      <div class="page_header floating_element">
-        <img src="/icons/ubuntu-logo.png" alt="Ubuntu Logo" class="floating_element"/>
-        <span class="floating_element">
-          Hello and welcome from bowerss5
-        </span>
-      </div>
-<!--      <div class="table_of_contents floating_element">
-        <div class="section_header section_header_grey">
-          TABLE OF CONTENTS
-        </div>
-        <div class="table_of_contents_item floating_element">
-          <a href="#about">About</a>
-        </div>
-        <div class="table_of_contents_item floating_element">
-          <a href="#changes">Changes</a>
-        </div>
-        <div class="table_of_contents_item floating_element">
-          <a href="#scope">Scope</a>
-        </div>
-        <div class="table_of_contents_item floating_element">
-          <a href="#files">Config files</a>
-        </div>
-      </div>
--->
-      <div class="content_section floating_element">
-
-
-        <div class="section_header section_header_red">
-          <div id="about"></div>
-          It works!
-        </div>
-        <div class="content_section_text">
-          <p>
-                This is the default welcome page used to test the correct 
-                operation of the Apache2 server after installation on Ubuntu systems.
-                It is based on the equivalent page on Debian, from which the Ubuntu Apache
-                packaging is derived.
-                If you can read this page, it means that the Apache HTTP server installed at
-                this site is working properly. You should <b>replace this file</b> (located at
-                <tt>/var/www/html/index.html</tt>) before continuing to operate your HTTP server.
-          </p>
-
-
-          <p>
-                If you are a normal user of this web site and don't know what this page is
-                about, this probably means that the site is currently unavailable due to
-                maintenance.
-                If the problem persists, please contact the site's administrator.
-          </p>
-
-        </div>
-        <div class="section_header">
-          <div id="changes"></div>
-                Configuration Overview
-        </div>
-        <div class="content_section_text">
-          <p>
-                Ubuntu's Apache2 default configuration is different from the
-                upstream default configuration, and split into several files optimized for
-                interaction with Ubuntu tools. The configuration system is
-                <b>fully documented in
-                /usr/share/doc/apache2/README.Debian.gz</b>. Refer to this for the full
-                documentation. Documentation for the web server itself can be
-                found by accessing the <a href="/manual">manual</a> if the <tt>apache2-doc</tt>
-                package was installed on this server.
-
-          </p>
-          <p>
-                The configuration layout for an Apache2 web server installation on Ubuntu systems is as follows:
-          </p>
-          <pre>
-/etc/apache2/
-|-- apache2.conf
-|       `--  ports.conf
-|-- mods-enabled
-|       |-- *.load
-|       `-- *.conf
-|-- conf-enabled
-|       `-- *.conf
-|-- sites-enabled
-|       `-- *.conf
-          </pre>
-          <ul>
-                        <li>
-                           <tt>apache2.conf</tt> is the main configuration
-                           file. It puts the pieces together by including all remaining configuration
-                           files when starting up the web server.
-                        </li>
-
-                        <li>
-                           <tt>ports.conf</tt> is always included from the
-                           main configuration file. It is used to determine the listening ports for
-                           incoming connections, and this file can be customized anytime.
-                        </li>
-
-                        <li>
-                           Configuration files in the <tt>mods-enabled/</tt>,
-                           <tt>conf-enabled/</tt> and <tt>sites-enabled/</tt> directories contain
-                           particular configuration snippets which manage modules, global configuration
-                           fragments, or virtual host configurations, respectively.
-                        </li>
-
-                        <li>
-                           They are activated by symlinking available
-                           configuration files from their respective
-                           *-available/ counterparts. These should be managed
-                           by using our helpers
-                           <tt>
-                                a2enmod,
-                                a2dismod,
-                           </tt>
-                           <tt>
-                                a2ensite,
-                                a2dissite,
-                            </tt>
-                                and
-                           <tt>
-                                a2enconf,
-                                a2disconf
-                           </tt>. See their respective man pages for detailed information.
-                        </li>
-
-                        <li>
-                           The binary is called apache2. Due to the use of
-                           environment variables, in the default configuration, apache2 needs to be
-                           started/stopped with <tt>/etc/init.d/apache2</tt> or <tt>apache2ctl</tt>.
-                           <b>Calling <tt>/usr/bin/apache2</tt> directly will not work</b> with the
-                           default configuration.
-                        </li>
-          </ul>
-        </div>
-
-        <div class="section_header">
-            <div id="docroot"></div>
-                Document Roots
-        </div>
-
-        <div class="content_section_text">
-            <p>
-                By default, Ubuntu does not allow access through the web browser to
-                <em>any</em> file apart of those located in <tt>/var/www</tt>,
-                <a href="http://httpd.apache.org/docs/2.4/mod/mod_userdir.html" rel="nofollow">public_html</a>
-                directories (when enabled) and <tt>/usr/share</tt> (for web
-                applications). If your site is using a web document root
-                located elsewhere (such as in <tt>/srv</tt>) you may need to whitelist your
-                document root directory in <tt>/etc/apache2/apache2.conf</tt>.
-            </p>
-            <p>
-                The default Ubuntu document root is <tt>/var/www/html</tt>. You
-                can make your own virtual hosts under /var/www. This is different
-                to previous releases which provides better security out of the box.
-            </p>
-        </div>
-
-        <div class="section_header">
-          <div id="bugs"></div>
-                Reporting Problems
-        </div>
-        <div class="content_section_text">
-          <p>
-                Please use the <tt>ubuntu-bug</tt> tool to report bugs in the
-                Apache2 package with Ubuntu. However, check <a
-                href="https://bugs.launchpad.net/ubuntu/+source/apache2"
-                rel="nofollow">existing bug reports</a> before reporting a new bug.
-          </p>
-          <p>
-                Please report bugs specific to modules (such as PHP and others)
-                to respective packages, not to the web server itself.
-          </p>
-        </div>
-
-
-
-
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Welcome!</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css?rev=4">
+</head>
+
+<body>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <div class="container">
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">CSE 383</a>
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="navbar-item"><a class="nav-link" href="shop.html">Shop</a></li>
+      </ul>
+    </nav>
+
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1>CSE 383 Final</h1>
+        <h3>by Sam Bowers</h2>
       </div>
     </div>
-    <div class="validator">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <img class="card-img-top"
+            src="data:image/jpeg;base64,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"
+            alt="">
+        </div>
+
+      </div>
+      <div class="col-md">
+        <div class="card">
+          <div class="card-body">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus corporis vero laborum maxime ea
+              minima aspernatur. Pariatur nobis vitae neque nostrum labore sint, rem amet, sed deserunt nemo ipsam sunt.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
-

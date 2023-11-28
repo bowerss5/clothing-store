@@ -98,5 +98,54 @@ class final_rest
 
 		return json_encode($retData);
 	}
+
+	public static function getCategories()
+	{
+		try {
+			$retData["status"] = 0;
+			$retData["message"] = "Query Successful.";
+			$retData["result"] = GET_SQL("SELECT DISTINCT category FROM product");
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = $e->getMessage();
+		}
+
+		return json_encode($retData);
+	}
+	public static function getSubCategories($category)
+	{
+		try {
+			$retData["status"] = 0;
+			$retData["message"] = "Query Successful.";
+			$retData["result"] = GET_SQL("SELECT DISTINCT subcategory FROM product WHERE category like ?", $category);
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = $e->getMessage();
+		}
+
+		return json_encode($retData);
+	}
+
+	public static function openCart()
+	{
+		try {
+			GET_SQL("INSERT INTO cart (cartID,closed) VALUES (NULL,'FALSE')");
+
+			$retData["status"] = 0;
+			$retData["message"] = "Cart opened successfully.";
+			$retData["cartID"] = intval(GET_SQL("select max(cartID) as cartID from cart")[0]["cartID"]);
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = "Error opening cart: " . $e->getMessage();
+		}
+
+		return json_encode($retData);
+	}
+
+	public static function addToCart($cart, $product, $quantity, $price)
+	{
+		
+	}
+
 }
 
