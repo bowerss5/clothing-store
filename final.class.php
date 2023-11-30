@@ -185,7 +185,7 @@ class final_rest
 			$retData["closed"]=GET_SQL("SELECT closed FROM cart WHERE cartID=?",$cartID)[0]["closed"];
 			$retData["message"] = "Successfully retreived cart.";
 			$retData["total"] = GET_SQL("select total from cart where cartID=?", $cartID)[0]["total"];
-			$retData["cart"] = GET_SQL("select title, quantity, product.product_id from product join product_cart on product.product_id=product_cart.product_id where cartID=?", $cartID);
+			$retData["cart"] = GET_SQL("select title, quantity, price, (quantity * price) as subtotal, product.product_id from product join product_cart on product.product_id=product_cart.product_id where cartID=?", $cartID);
 		} catch (Exception $e) {
 			$retData["status"] = 1;
 			$retData["message"] = "Error opening cart: " . $e->getMessage();
@@ -209,9 +209,9 @@ class final_rest
 				$change = 0;
 			}
 
-			EXEC_SQL("UPDATE cart set closed = date() where cartID=?", $cartID);
+			EXEC_SQL("UPDATE cart set closed = datetime	() where cartID=?", $cartID);
 
-			$retData["status"] = 1;
+			$retData["status"] = 0;
 			$retData["message"] = "Successfully closed cart.";
 			$retData["change"] = $change;
 		} catch (Exception $e) {
@@ -221,6 +221,18 @@ class final_rest
 		return json_encode($retData);
 	}
 
+	public static function getOrders($start, $end)
+	{
+		try {
+			$retData["orders"]=GET_SQL("Select * from cart where closed>=DATETIME(?) and closed<=DATETIME(?)", $start, $end);
+			$retData["status"] = 0;
+			$retData["message"] = "Successfully retrieved orders.";
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = "Error getting orders: " . $e.getMessage();
+		}
 
+		return json_encode($retData);
+	}
 }
 

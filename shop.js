@@ -29,11 +29,11 @@ $(document).ready(() => {
     $("#min-price, #max-price").on("input", () => {
         priceMax = $("#max-price").val();
         priceMin = $("#min-price").val();
-        
+
         // Handle default values
         priceMin = priceMin === '' ? 0 : priceMin;
         priceMax = priceMax === '' ? 10000 : priceMax;
-        
+
         console.log(priceMin, priceMax)
         getProducts();
     });
@@ -42,11 +42,48 @@ $(document).ready(() => {
         $('#cartModal').modal('hide');
     });
     $(".purchase").click(() => {
-        
+        $("#cartForm").submit();
     });
-    
+    $("#cartForm").submit((e) => {
+        e.preventDefault();
+        closeCart();
+    });
+    $('input[name="method"]').change(function() {
+        if ($(this).val() === 'card') {
+            // Disable the amount field and set its value to be the same as the total field
+            $('#amount').prop('disabled', true).val($('#total').val().substring(1));
+        } else {
+            // Enable the amount field
+            $('#amount').prop('disabled', false).val('');
+        }
+    });
 });
 
+
+function closeCart() {
+    console.log("Submit");
+    $.ajax({
+        url: `/cse383_final/final.php/closeCart/?cartID=${cart}&amount=${$("#amount").val()}&method=${parseFloat($('input[name="method"]:checked').val())}`,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            if (data.status === 0) {
+                // API call successful
+                $('#cartModal').modal('hide');
+                alert(`Successfully closed cart\n\nYour change is: $${data.change}`)
+                location.reload();
+                // cart = undefined;
+
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function (error) {
+            console.error('Error: ' + error.statusText);
+        }
+    });
+
+}
 
 function getSubCategories() {
     var api = `/cse383_final/final.php/getSubCategories/?category=${category}`;
@@ -136,9 +173,9 @@ function getProducts() {
             if (data.status === 0) {
                 // API call successful
                 products = data.result.filter((e) => (parseFloat(e.price) >= priceMin && parseFloat(e.price) <= priceMax)).sort((e1, e2) => compareProducts(e1, e2));
-                
+
                 renderProducts();
-                
+
             } else {
                 console.error('Error: ' + data.message);
             }
@@ -161,10 +198,11 @@ function getCart() {
                     var listItem = $('<li>').text(e.title);
                     var minusButton = $('<a>').addClass('btn btn-secondary').attr('href', '#').text('-').click(() => addToCart(e.product_id, -1));
                     var plusButton = $('<a>').addClass('btn btn-primary').attr('href', '#').text('+').click(() => addToCart(e.product_id));
-
-                    listItem.append(' ', minusButton, ` (x${e.quantity}) ` , plusButton);
+                    var subtotal = $('<span>').text(`$${e.price} x ${e.quantity} = Subtotal: $${e.subtotal}`);
+                    listItem.append(' ', minusButton, ` (x${e.quantity}) `, plusButton, '</br>', subtotal);
                     $('#cartModal .modal-body ul').append(listItem);
                 });
+                $('#total').attr('value', `$${data.total}`)
             }
             else {
                 console.error('Error: ' + data.message);

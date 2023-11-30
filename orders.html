@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Welcome!</title>
+  <title>Orders</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +10,7 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css?rev=4">
+  <link rel="stylesheet" href="style.css?rev=6">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
@@ -23,8 +23,34 @@
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
   <script src="navbar.js?rev=2"></script>
-  <div class="container my-navbar">
+  <script src="orders.js?rev=8"></script>
+  <div class="container">
+    <div class="fixed-top my-navbar"></div>
 
+    <div class="main">
+      <div class="row justify-content-center">
+        <div class="col-lg-3 col-sm-6">
+          <label for="startDate">Start</label>
+          <input id="startDate" class="form-control" type="date" value="2000-01-01"/>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <label for="endDate">End</label>
+          <input id="endDate" class="form-control" type="date" value="now"/>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Date/Time</th>
+            <th scope="col"># Items</th>
+            <th scope="col">Total</th>
+            <th scope="col">Details</th>
+          </tr>
+        </thead>
+        <tbody id="orders"></tbody>
+      </table>
+    </div>
   </div>
   </div>
 </body>

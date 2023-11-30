@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="style.css?rev=5">
+    <link rel="stylesheet" href="style.css?rev=6">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 </head>
@@ -24,7 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
         </script>
-    <script src="shop.js?rev=16"></script>
+    <script src="shop.js?rev=40"></script>
     <script src="navbar.js"></script>
 
 
@@ -40,9 +40,34 @@
                 </div>
                 <div class="modal-body">
                     <ul></ul>
+                    <form id="cartForm">
+                        <div class="form-group">
+                            <label for="total">Total:</label>
+                            <input type="text" class="form-control" id="total" name="total" value="$    " disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount:
+                            <input type="text" class="form-control" id="amount" name="amount" required></label>
+                        </div>
+
+                        <div class="form-group">
+                                Method:
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="cash" name="method" value="cash"
+                                    required>
+                                <label class="form-check-label" for="cash">Cash</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="card" name="method" value="card"
+                                    required>
+                                <label class="form-check-label" for="card">Card</label>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close" data-toggle="modal" data-target="#cartModal" data-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-secondary close" data-toggle="modal" data-target="#cartModal"
+                        data-dismiss="modal">Back</button>
                     <button type="button" class="btn btn-success purchase">Purchase</button>
                 </div>
             </div>
@@ -71,8 +96,8 @@
 
 
 
-        <div id="main">
-            <div class="row h-50 bg-light">
+        <div class="main">
+            <div class="row h-100 bg-light">
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
