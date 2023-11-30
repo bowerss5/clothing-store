@@ -1,6 +1,12 @@
 var products = {};
 var category = "%25";
 var subcategory = "%25";
+var cart;
+var sort = "";
+var priceMin = 0;
+var priceMax = 10000;
+var asc = true;
+
 
 $(document).ready(() => {
     getCategories();
@@ -16,6 +22,29 @@ $(document).ready(() => {
         console.log('Selected Sub-Category:', category);
         getProducts();
     });
+    $('#sort').on('change', function () {
+        sort = $(this).val();
+        getProducts();
+    });
+    $("#min-price, #max-price").on("input", () => {
+        priceMax = $("#max-price").val();
+        priceMin = $("#min-price").val();
+        
+        // Handle default values
+        priceMin = priceMin === '' ? 0 : priceMin;
+        priceMax = priceMax === '' ? 10000 : priceMax;
+        
+        console.log(priceMin, priceMax)
+        getProducts();
+    });
+    $(".close").click(() => {
+        console.log("Close")
+        $('#cartModal').modal('hide');
+    });
+    $(".purchase").click(() => {
+        
+    });
+    
 });
 
 
@@ -29,8 +58,8 @@ function getSubCategories() {
             if (data.status === 0) {
                 // API call successful
                 subcategories = data.result;
-                
-                $('#subcategories').empty();    
+
+                $('#subcategories').empty();
                 $('#subcategories').append($('<option value="%25" selected>All Sub-Categories</option>'));
                 subcategories.forEach((s) => {
                     $('#subcategories').append($('<option>', {
@@ -61,8 +90,6 @@ function getCategories() {
             if (data.status === 0) {
                 // API call successful
                 categories = data.result;
-                
-                
 
                 $('#categories').trigger('change');
 
@@ -84,6 +111,20 @@ function getCategories() {
     });
 }
 
+function compareProducts(e1, e2) {
+    if (sort == "price") { // Asscending price
+        return parseFloat(e1.price) - parseFloat(e2.price);
+    } else if (sort == "-price") { // Descending price
+        return parseFloat(e2.price) - parseFloat(e1.price);
+    }
+    // Default to category
+    let compare = e1.category.toLowerCase().localeCompare(e2.category.toLowerCase());
+    if (compare != 0) {
+        return compare;
+    }
+    return e1.subcategory.toLowerCase().localeCompare(e2.subcategory.toLowerCase());
+}
+
 function getProducts() {
     $("#cart-alert").hide();
     var apiEndpoint = `/cse383_final/final.php/getProduct?category=${category}&subcategory=${subcategory}&id=0`;
@@ -94,8 +135,92 @@ function getProducts() {
         success: function (data) {
             if (data.status === 0) {
                 // API call successful
-                products = data.result;
+                products = data.result.filter((e) => (parseFloat(e.price) >= priceMin && parseFloat(e.price) <= priceMax)).sort((e1, e2) => compareProducts(e1, e2));
+                
                 renderProducts();
+                
+            } else {
+                console.error('Error: ' + data.message);
+            }
+        },
+        error: function (error) {
+            console.error('Error: ' + error.statusText);
+        }
+    });
+}
+
+function getCart() {
+    $.ajax({
+        url: `/cse383_final/final.php/getCart/?cartID=${cart}`,
+        method: 'GET',
+        dataType: 'json',
+        success: (data) => {
+            if (data.status === 0) {
+                $('#cartModal .modal-body ul').empty();
+                data.cart.forEach((e) => {
+                    var listItem = $('<li>').text(e.title);
+                    var minusButton = $('<a>').addClass('btn btn-secondary').attr('href', '#').text('-').click(() => addToCart(e.product_id, -1));
+                    var plusButton = $('<a>').addClass('btn btn-primary').attr('href', '#').text('+').click(() => addToCart(e.product_id));
+
+                    listItem.append(' ', minusButton, ` (x${e.quantity}) ` , plusButton);
+                    $('#cartModal .modal-body ul').append(listItem);
+                });
+            }
+            else {
+                console.error('Error: ' + data.message);
+            }
+        },
+        error: (error) => {
+            console.error('Error: ' + error.statusText);
+        }
+    });
+}
+
+function createCart(id) {
+    console.log(id);
+    if (cart === undefined) {
+        // Call openCart and set cart to id returned.
+        $.ajax({
+            url: '/cse383_final/final.php/openCart',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status === 0) {
+                    // Set cart value
+                    cart = data.cartID;
+                    $('#cart-icon').toggleClass('d-none')
+                    addToCart(id);
+                    $('#cart-icon').click(function () {
+                        // Show the modal
+                        $('#cartModal').modal('show');
+                        getCart();
+
+                    });
+
+                } else {
+                    console.error('Error: ' + data.message);
+                }
+            },
+            error: function (error) {
+                console.error('Error: ' + error.statusText);
+            }
+        });
+    } else {
+        addToCart(id);
+    }
+}
+
+function addToCart(id, q = 1) {
+    console.log(id, cart);
+    var api = `/cse383_final/final.php/addToCart/?cart=${cart}&product=${id}&quantity=${q}`
+    $.ajax({
+        url: api,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            if (data.status === 0) {
+                // Set cart value
+                getCart();
             } else {
                 console.error('Error: ' + data.message);
             }
@@ -127,13 +252,12 @@ function renderProducts() {
             <div class="card-body">
                 <p class="card-text">Price: $${product.price}</p>
                 <p class="card-text">Category: ${product.category}</p>
-                
+                <p class="card-text">Sub-Category: ${product.subcategory}</p>
             </div>
             <div class="card-footer">
-                <button type="button" class="btn btn-success" onclick="{console.log('${product.title}')}">Add to Cart</button>
+                <button type="button" class="btn btn-success" onclick="createCart(${product.product_id})">Add to Cart</button>
             </div>
-        </div>
-      `;
+        </div>`;
 
         // Set the HTML content for the product column
         productColumn.html(productHtml);

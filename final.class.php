@@ -129,7 +129,7 @@ class final_rest
 	public static function openCart()
 	{
 		try {
-			GET_SQL("INSERT INTO cart (cartID,closed) VALUES (NULL,'FALSE')");
+			EXEC_SQL("INSERT INTO cart (cartID,closed) VALUES (NULL,NULL)");
 
 			$retData["status"] = 0;
 			$retData["message"] = "Cart opened successfully.";
@@ -138,14 +138,89 @@ class final_rest
 			$retData["status"] = 1;
 			$retData["message"] = "Error opening cart: " . $e->getMessage();
 		}
+		
+		return json_encode($retData);
+	}
+	
+	public static function addToCart($cart, $product, $quantity)
+	{
+		try {
+			if (GET_SQL("SELECT closed FROM cart WHERE cartID=?",$cart)[0]["closed"] != null) {
+				throw new Exception("Can not modify closed out cart.");
+			}
+			
+			// If cart already has an entry for given product.
+			$count = GET_SQL("SELECT quantity as q FROM product_cart WHERE product_id=? and cartID=?", $product, $cart)[0]['q'];
+			if ($count[0]['q'] > 0) {
+				$change = intval($quantity) + intval($count);
+				if ($change < 1) {
+					EXEC_SQL("DELETE FROM product_cart WHERE cartID=? AND product_id=?", $cart, $product);
+					$quantity = -$count;
+				} else {
+					EXEC_SQL("UPDATE product_cart SET quantity=? WHERE cartID = ? and product_id=?", $change, $cart, $product);
+				}
+			} else {
+				if ($quantity <= 0 ) {
+					throw new Exception("Can't add negative quantity.");
+				}
+				$retData["data"] = GET_SQL("INSERT INTO product_cart (product_id,cartID, quantity) VALUES (?,?,?)", $product, $cart, $quantity);
+			}
+			$dPrice = floatval($quantity) * floatval(GET_SQL("SELECT price FROM product WHERE product_id=?",$product)[0]['price']);
+			EXEC_SQL("UPDATE cart SET total=total+? WHERE cartID=?",$dPrice, $cart);
+			$retData["status"] = 0;
+			$retData["test"] = $dPrice;
+			$retData["message"] = "Cart updated successfully.";
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = "Error opening cart: " . $e->getMessage();
+		}
 
 		return json_encode($retData);
 	}
-
-	public static function addToCart($cart, $product, $quantity, $price)
+	
+	public static function getCart($cartID)
 	{
+		try {
+			$retData["status"] = 0;
+			$retData["closed"]=GET_SQL("SELECT closed FROM cart WHERE cartID=?",$cartID)[0]["closed"];
+			$retData["message"] = "Successfully retreived cart.";
+			$retData["total"] = GET_SQL("select total from cart where cartID=?", $cartID)[0]["total"];
+			$retData["cart"] = GET_SQL("select title, quantity, product.product_id from product join product_cart on product.product_id=product_cart.product_id where cartID=?", $cartID);
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = "Error opening cart: " . $e->getMessage();
+		}
 		
+		return json_encode($retData);
 	}
+	
+	
+	public static function closeCart($cartID, $amount, $method)
+	{
+		try {
+			$total = GET_SQL("select total from cart where cartID=?", $cartID)[0]["total"];
+			$change = floatval($amount) - floatval($total);
+			
+			if ($change < 0) {
+				throw new Exception("Not enough money.");
+			}
+
+			if ($method == "card") {
+				$change = 0;
+			}
+
+			EXEC_SQL("UPDATE cart set closed = date() where cartID=?", $cartID);
+
+			$retData["status"] = 1;
+			$retData["message"] = "Successfully closed cart.";
+			$retData["change"] = $change;
+		} catch (Exception $e) {
+			$retData["status"] = 1;
+			$retData["message"] = "Error closing cart: " . $e->getMessage();
+		}
+		return json_encode($retData);
+	}
+
 
 }
 
