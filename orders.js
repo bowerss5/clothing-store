@@ -26,7 +26,7 @@ function getOrders() {
                     var row = $("<tr>").html(`
                     <th scope="row">${e.cartID}</th>
                     <td>${e.closed}</td>
-                    <td>${e.count}</td>
+                    <td>${e.quantity}</td>
                     <td>$${e.total}</td>
                     <td><a href="print.html?id=${e.cartID}" target="_blank">Print</a></td>`)
                     $('#orders').append(row);

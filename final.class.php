@@ -129,7 +129,7 @@ class final_rest
 	public static function openCart()
 	{
 		try {
-			EXEC_SQL("INSERT INTO cart (cartID,closed) VALUES (NULL,NULL)");
+			EXEC_SQL("INSERT INTO cart (cartID,closed,quantity) VALUES (NULL,NULL,0)");
 
 			$retData["status"] = 0;
 			$retData["message"] = "Cart opened successfully.";
@@ -166,7 +166,7 @@ class final_rest
 				$retData["data"] = GET_SQL("INSERT INTO product_cart (product_id,cartID, quantity) VALUES (?,?,?)", $product, $cart, $quantity);
 			}
 			$dPrice = floatval($quantity) * floatval(GET_SQL("SELECT price FROM product WHERE product_id=?",$product)[0]['price']);
-			EXEC_SQL("UPDATE cart SET total=total+? WHERE cartID=?",$dPrice, $cart);
+			EXEC_SQL("UPDATE cart SET total=total+?, quantity=quantity+? WHERE cartID=?",$dPrice, $quantity, $cart);
 			$retData["status"] = 0;
 			$retData["test"] = $dPrice;
 			$retData["message"] = "Cart updated successfully.";
