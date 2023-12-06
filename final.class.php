@@ -224,7 +224,7 @@ class final_rest
 	public static function getOrders($start, $end)
 	{
 		try {
-			$retData["orders"]=GET_SQL("Select * from cart where closed>=DATETIME(?) and closed<=DATETIME(?)", $start, $end);
+			$retData["orders"]=GET_SQL("Select * from cart where closed>=DATETIME(?) and closed<=DATETIME(?) order by closed desc", $start, $end);
 			$retData["status"] = 0;
 			$retData["message"] = "Successfully retrieved orders.";
 		} catch (Exception $e) {

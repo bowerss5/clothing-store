@@ -7,25 +7,28 @@ var priceMin = 0;
 var priceMax = 10000;
 var asc = true;
 
-
 $(document).ready(() => {
     getCategories();
     getProducts();
+
     $('#categories').on('change', function () {
         category = $(this).val();
         getSubCategories();
         getProducts();
         console.log('Selected Category:', category);
     });
+
     $('#subcategories').on('change', function () {
         subcategory = $(this).val();
         console.log('Selected Sub-Category:', category);
         getProducts();
     });
+
     $('#sort').on('change', function () {
         sort = $(this).val();
         getProducts();
     });
+
     $("#min-price, #max-price").on("input", () => {
         priceMax = $("#max-price").val();
         priceMin = $("#min-price").val();
@@ -34,21 +37,25 @@ $(document).ready(() => {
         priceMin = priceMin === '' ? 0 : priceMin;
         priceMax = priceMax === '' ? 10000 : priceMax;
 
-        console.log(priceMin, priceMax)
+        console.log(priceMin, priceMax);
         getProducts();
     });
+
     $(".close").click(() => {
-        console.log("Close")
+        console.log("Close");
         $('#cartModal').modal('hide');
     });
+
     $(".purchase").click(() => {
         $("#cartForm").submit();
     });
+
     $("#cartForm").submit((e) => {
         e.preventDefault();
         closeCart();
     });
-    $('input[name="method"]').change(function() {
+
+    $('input[name="method"]').change(function () {
         if ($(this).val() === 'card') {
             // Disable the amount field and set its value to be the same as the total field
             $('#amount').prop('disabled', true).val($('#total').val().substring(1));
@@ -59,30 +66,27 @@ $(document).ready(() => {
     });
 });
 
-
 function closeCart() {
     console.log("Submit");
     $.ajax({
         url: `/cse383_final/final.php/closeCart/?cartID=${cart}&amount=${$("#amount").val()}&method=${parseFloat($('input[name="method"]:checked').val())}`,
         method: 'GET',
-        dataType: 'json',
-        success: function (data) {
+        dataType: 'json'
+    })
+        .done(function (data) {
             if (data.status === 0) {
                 // API call successful
                 $('#cartModal').modal('hide');
-                alert(`Successfully closed cart\n\nYour change is: $${data.change}`)
+                alert(`Successfully closed cart\n\nYour change is: $${data.change}`);
                 location.reload();
                 // cart = undefined;
-
             } else {
                 alert(data.message);
             }
-        },
-        error: function (error) {
+        })
+        .fail(function (error) {
             console.error('Error: ' + error.statusText);
-        }
-    });
-
+        });
 }
 
 function getSubCategories() {
@@ -90,8 +94,9 @@ function getSubCategories() {
     $.ajax({
         url: api,
         method: 'GET',
-        dataType: 'json',
-        success: function (data) {
+        dataType: 'json'
+    })
+        .done(function (data) {
             if (data.status === 0) {
                 // API call successful
                 subcategories = data.result;
@@ -104,26 +109,23 @@ function getSubCategories() {
                         text: s.subcategory
                     }));
                 });
-
             } else {
                 console.error('Error: ' + data.message);
             }
-        },
-        error: function (error) {
+        })
+        .fail(function (error) {
             console.error('Error: ' + error.statusText);
-        }
-    });
+        });
 }
-
-
 
 function getCategories() {
     var apiEndpoint = '/cse383_final/final.php/getCategories';
     $.ajax({
         url: apiEndpoint,
         method: 'GET',
-        dataType: 'json',
-        success: function (data) {
+        dataType: 'json'
+    })
+        .done(function (data) {
             if (data.status === 0) {
                 // API call successful
                 categories = data.result;
@@ -137,15 +139,13 @@ function getCategories() {
                         text: c.category
                     }));
                 });
-
             } else {
                 console.error('Error: ' + data.message);
             }
-        },
-        error: function (error) {
+        })
+        .fail(function (error) {
             console.error('Error: ' + error.statusText);
-        }
-    });
+        });
 }
 
 function compareProducts(e1, e2) {
@@ -168,30 +168,29 @@ function getProducts() {
     $.ajax({
         url: apiEndpoint,
         method: 'GET',
-        dataType: 'json',
-        success: function (data) {
+        dataType: 'json'
+    })
+        .done(function (data) {
             if (data.status === 0) {
                 // API call successful
                 products = data.result.filter((e) => (parseFloat(e.price) >= priceMin && parseFloat(e.price) <= priceMax)).sort((e1, e2) => compareProducts(e1, e2));
-
                 renderProducts();
-
             } else {
                 console.error('Error: ' + data.message);
             }
-        },
-        error: function (error) {
+        })
+        .fail(function (error) {
             console.error('Error: ' + error.statusText);
-        }
-    });
+        });
 }
 
 function getCart() {
     $.ajax({
         url: `/cse383_final/final.php/getCart/?cartID=${cart}`,
         method: 'GET',
-        dataType: 'json',
-        success: (data) => {
+        dataType: 'json'
+    })
+        .done(function (data) {
             if (data.status === 0) {
                 $('#cartModal .modal-body ul').empty();
                 data.cart.forEach((e) => {
@@ -202,16 +201,14 @@ function getCart() {
                     listItem.append(' ', minusButton, ` (x${e.quantity}) `, plusButton, '</br>', subtotal);
                     $('#cartModal .modal-body ul').append(listItem);
                 });
-                $('#total').attr('value', `$${data.total}`)
-            }
-            else {
+                $('#total').attr('value', `$${data.total}`);
+            } else {
                 console.error('Error: ' + data.message);
             }
-        },
-        error: (error) => {
+        })
+        .fail(function (error) {
             console.error('Error: ' + error.statusText);
-        }
-    });
+        });
 }
 
 function createCart(id) {
@@ -221,28 +218,26 @@ function createCart(id) {
         $.ajax({
             url: '/cse383_final/final.php/openCart',
             method: 'GET',
-            dataType: 'json',
-            success: function (data) {
+            dataType: 'json'
+        })
+            .done(function (data) {
                 if (data.status === 0) {
                     // Set cart value
                     cart = data.cartID;
-                    $('#cart-icon').toggleClass('d-none')
+                    $('#cart-icon').toggleClass('d-none');
                     addToCart(id);
                     $('#cart-icon').click(function () {
                         // Show the modal
                         $('#cartModal').modal('show');
                         getCart();
-
                     });
-
                 } else {
                     console.error('Error: ' + data.message);
                 }
-            },
-            error: function (error) {
+            })
+            .fail(function (error) {
                 console.error('Error: ' + error.statusText);
-            }
-        });
+            });
     } else {
         addToCart(id);
     }
@@ -250,23 +245,23 @@ function createCart(id) {
 
 function addToCart(id, q = 1) {
     console.log(id, cart);
-    var api = `/cse383_final/final.php/addToCart/?cart=${cart}&product=${id}&quantity=${q}`
+    var api = `/cse383_final/final.php/addToCart/?cart=${cart}&product=${id}&quantity=${q}`;
     $.ajax({
         url: api,
         method: 'GET',
-        dataType: 'json',
-        success: function (data) {
+        dataType: 'json'
+    })
+        .done(function (data) {
             if (data.status === 0) {
                 // Set cart value
                 getCart();
             } else {
                 console.error('Error: ' + data.message);
             }
-        },
-        error: function (error) {
+        })
+        .fail(function (error) {
             console.error('Error: ' + error.statusText);
-        }
-    });
+        });
 }
 
 function renderProducts() {
