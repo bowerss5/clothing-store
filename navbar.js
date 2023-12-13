@@ -1,3 +1,5 @@
+// Sam Bowers CSE 383-D Final
+
 $(document).ready(() => {
     var navhtml = `<nav class="navbar navbar-expand-sm navbar-dark bg-dark text-dark">
     <div class="container-fluid">

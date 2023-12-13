@@ -1,3 +1,5 @@
+// Sam Bowers CSE 383-D Final
+
 var products = {};
 var category = "%25";
 var subcategory = "%25";

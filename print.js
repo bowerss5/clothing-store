@@ -1,3 +1,5 @@
+// Sam Bowers CSE 383-D Final
+
 $(document).ready(() => {
     const queryString = window.location.search;
     console.log(queryString);
